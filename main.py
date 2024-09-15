@@ -20,8 +20,15 @@ for row in rows:
     
     a = p.find('a')
         
-    # If <a> exists, extract and print its text
+    # If <a> exists, extract and print its text and attach the link
     if a:
-        origami_folds.append(a.text.strip())
+        fold_name = append(a.text.strip())
+        fold_link = a['href']
+        origami_folds.append((fold_name,fold_link))
 
-print(sorted(origami_folds))
+# sort array alphabetically by first element
+origami_folds.sort(key=lambda x: x[0])
+
+# loop through the array to print result
+for fold in origami_folds:
+    print(f"{fold[0]}, {fold[1]}")
