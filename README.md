@@ -1,4 +1,4 @@
-# Project 2 in PPDS
+# Origami Scraper
 This is a web scraping project that retrieves the names of all available origami folds from this website https://www.origami-fun.com/origami-instructions.html and sorts the folds in alphabetical order with associated links. 
 
 We accomplish this by creating an array that stores the names of the folds along with their respective links, provided the data exists and can be extracted.
