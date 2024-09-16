@@ -13,33 +13,36 @@ def check_limit():
 def getResponse():
     check_limit()
     return requests.get("https://www.origami-fun.com/origami-instructions.html")
+
 response = getResponse()
-site_text = response.text
+if response.text:
+    site_text = response.text
+    # initialize BeautifulSoup Parser
+    soup = BeautifulSoup(site_text, "html.parser")
 
-# initialize BeautifulSoup Parser
-soup = BeautifulSoup(site_text, "html.parser")
+    # initialize array of origami folds
+    origami_folds = []
 
-# initialize array of origami folds
-origami_folds = []
-
-# Find all table rows
-rows = soup.find_all('tr')
-# Loop through each row
-for row in rows:
-    # Find the <p> element that contains an <a> tag inside the row
-    p = row.find('p')
-    
-    a = p.find('a')
+    # Find all table rows
+    rows = soup.find_all('tr')
+    # Loop through each row
+    for row in rows:
+        # Find the <p> element that contains an <a> tag inside the row
+        p = row.find('p')
         
-    # If <a> exists, extract and print its text and attach the link
-    if a:
-        fold_name = a.text.strip()
-        fold_link = a['href']
-        origami_folds.append((fold_name,fold_link))
+        a = p.find('a')
+            
+        # If <a> exists, extract and print its text and attach the link
+        if a:
+            fold_name = a.text.strip()
+            fold_link = a['href']
+            origami_folds.append((fold_name,fold_link))
 
-# sort array alphabetically by first element
-origami_folds.sort(key=lambda x: x[0])
+    # sort array alphabetically by first element
+    origami_folds.sort(key=lambda x: x[0])
 
-# loop through the array to print result
-for fold in origami_folds:
-    print(f"{fold[0]}, {fold[1]}")
+    # loop through the array to print result
+    for fold in origami_folds:
+        print(f"{fold[0]}, {fold[1]}")
+else:
+    print("Sorry, no folds available right now!")
