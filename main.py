@@ -1,8 +1,19 @@
 import requests
+from ratelimit import limits, sleep_and_retry
 from bs4 import BeautifulSoup
 
+# add rate limit check to API requests (30 every 60s)
+@sleep_and_retry
+@limits(calls=30, period=60)
+def check_limit():
+    ''' Empty function just to check for calls to API '''
+    return
+
 # get html from site's URL
-response = requests.get("https://www.origami-fun.com/origami-instructions.html")
+def getResponse():
+    check_limit()
+    return requests.get("https://www.origami-fun.com/origami-instructions.html")
+response = getResponse()
 site_text = response.text
 
 # initialize BeautifulSoup Parser
@@ -22,7 +33,7 @@ for row in rows:
         
     # If <a> exists, extract and print its text and attach the link
     if a:
-        fold_name = append(a.text.strip())
+        fold_name = a.text.strip()
         fold_link = a['href']
         origami_folds.append((fold_name,fold_link))
 
